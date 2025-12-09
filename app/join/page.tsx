@@ -1,15 +1,12 @@
 export default function JoinPage() {
   return (
     <div className="flex flex-col gap-10">
-      <div className="text-xs tracking-[0.25em] uppercase">Apply to Vanta</div>
-
       <h1 className="text-2xl md:text-3xl font-semibold leading-snug max-w-[18ch]">
         Join the private network.
       </h1>
 
       <p className="text-sm opacity-80 max-w-[34ch]">
-        Share your details below. Every profile is reviewed by a working model. We are opening first in Milan, with more cities
-        to follow.
+        Share your details below. Every profile is reviewed by a working model. We are opening first in Milan, with more cities to follow.
       </p>
 
       <form className="mt-6 space-y-4">

@@ -3,8 +3,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex flex-col gap-12">
-      <div className="text-xs tracking-[0.25em] uppercase">VANTA</div>
-
       <div className="flex flex-col gap-4">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight max-w-[14ch]">
           A private network for models.
