@@ -7,7 +7,7 @@ export default function AboutPage() {
 
       <div className="text-sm leading-relaxed opacity-80 space-y-4">
         <p>
-          Vanta is a private network for models. Every member is verified by a working model, so you only see people who are real and active in the industry.
+          Vanta is a private network for models and fashion professionals, founded by a working model in Milan with over six years of experience in the industry. Every member is verified by someone who is active in the work, so you only see people who are real and current.
         </p>
         <p>
           It is a quiet alternative to promoters, open calls and unsolicited DMs. Models, photographers and stylists connect through mutual introductions instead of random outreach.

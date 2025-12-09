@@ -23,7 +23,7 @@ export default function Nav() {
       <select
         value={currentPath}
         onChange={(e) => router.push(e.target.value)}
-        className="sm:hidden bg-transparent border border-white/60 text-xs px-2 py-1"
+        className="sm:hidden bg-transparent border border-white/60 text-xs px-2 py-1 rounded-none"
       >
         <option value="/">Home</option>
         <option value="/join">Apply</option>

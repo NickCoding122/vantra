@@ -13,12 +13,12 @@ export default function JoinPage() {
         <input
           type="text"
           placeholder="First and last name"
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none"
+          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
         />
         <select
           name="role"
           defaultValue=""
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 outline-none"
+          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 outline-none rounded-none"
         >
           <option value="" disabled>
             Role (model, photographer, stylist…)
@@ -34,12 +34,12 @@ export default function JoinPage() {
         <input
           type="text"
           placeholder="Instagram handle"
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none"
+          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
         />
         <select
           name="niche"
           defaultValue=""
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 outline-none"
+          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 outline-none rounded-none"
         >
           <option value="" disabled>
             Niche (runway, commercial, editorial…)
@@ -54,12 +54,12 @@ export default function JoinPage() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none"
+          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
         />
         <input
           type="text"
           placeholder="Agency (optional)"
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none"
+          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
         />
         <button
           type="button"
