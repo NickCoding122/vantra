@@ -7,10 +7,10 @@ export default function Home() {
 
       <div className="flex flex-col gap-4">
         <h1 className="text-4xl md:text-5xl font-semibold leading-tight max-w-[14ch]">
-          A private network for models in Milan.
+          A private network for models.
         </h1>
         <p className="text-sm md:text-base opacity-80 mt-4 max-w-[34ch]">
-          Verified profiles only. Built for models, by models.
+          Verified profiles only. Built for models, by models. Launching in Milan, then other fashion capitals.
         </p>
       </div>
 
