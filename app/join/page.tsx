@@ -70,7 +70,7 @@ export default function JoinPage() {
       </form>
 
       <p className="text-xs opacity-70 mt-3 max-w-[36ch]">
-        We review every profile manually. If accepted, you’ll receive a private invite when Vanta opens in your city.
+        We review every profile manually. If accepted, you’ll receive a private invite when Vantra opens in your city.
       </p>
     </div>
   );
