@@ -14,8 +14,8 @@ export default function Home() {
 
       <div className="flex flex-col">
         <Link
-          href="/join"
-          className="inline-flex items-center justify-center border border-white px-6 py-2 text-xs tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
+          href="/apply"
+          className="border border-white px-6 py-3 text-xs tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
         >
           Apply to join
         </Link>
