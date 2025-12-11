@@ -1,5 +1,5 @@
 import { authOptions } from "../../lib/authOptions";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import Link from "next/link";
 
 export default async function AdminPage() {
