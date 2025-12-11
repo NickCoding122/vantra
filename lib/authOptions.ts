@@ -1,30 +1,32 @@
-import type { NextAuthOptions } from "next-auth";
+import type { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export const adminEmails = [
-  "nick@vantra.app",
-  "anton@vantra.app"
-].map(e => e.toLowerCase());
+const ADMIN_EMAILS = ["nick@vantra.app", "anton@vantra.app"];
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    })
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
     async signIn({ user }) {
-      const email = user?.email?.toLowerCase() ?? "";
-      return adminEmails.includes(email);
+      if (!user?.email) return false;
+      // Only allow listed admin emails to sign in
+      return ADMIN_EMAILS.includes(user.email);
     },
     async session({ session }) {
-      const email = session.user?.email?.toLowerCase() ?? "";
-      (session as any).isAdmin = adminEmails.includes(email);
+      if (session?.user?.email && ADMIN_EMAILS.includes(session.user.email)) {
+        // Add a simple flag onto the session
+        (session.user as any).isAdmin = true;
+      }
       return session;
-    }
+    },
   },
-  pages: {
-    signIn: "/api/auth/signin"
-  }
 };
+
+export default authOptions;
