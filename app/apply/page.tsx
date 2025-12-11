@@ -1,13 +1,13 @@
 "use client";
 
-import type React from "react";
+import type { FormEvent } from "react";
 import { useState } from "react";
 
 export default function ApplyPage() {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
     setStatus("idle");
