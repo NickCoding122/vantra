@@ -19,7 +19,6 @@ export default function ApplyPage() {
       name: (formData.get("name") || "").toString().trim(),
       role: (formData.get("role") || "").toString().trim(),
       instagram: (formData.get("instagram") || "").toString().trim(),
-      niche: (formData.get("niche") || "").toString().trim(),
       email: (formData.get("email") || "").toString().trim(),
       agency: (formData.get("agency") || "").toString().trim(),
     };
@@ -75,11 +74,6 @@ export default function ApplyPage() {
           name="instagram"
           type="text"
           placeholder="Instagram handle"
-          className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
-        />
-        <input
-          name="niche"
-          placeholder="Niche (runway, commercial, editorial...)"
           className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
         />
         <input
