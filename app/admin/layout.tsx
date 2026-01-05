@@ -1,5 +1,4 @@
-import { authOptions } from "../../lib/authOptions";
-import { getServerSession } from "next-auth/next";
+import { auth } from "../../auth";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -8,7 +7,7 @@ export default async function AdminLayout({
 }: {
   children: ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     redirect("/api/auth/signin");

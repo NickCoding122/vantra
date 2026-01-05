@@ -1,9 +1,8 @@
-import { authOptions } from "../../lib/authOptions";
-import { getServerSession } from "next-auth/next";
+import { auth } from "../../auth";
 import Link from "next/link";
 
 export default async function AdminPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const email = session?.user?.email ?? "Admin";
 
   return (
