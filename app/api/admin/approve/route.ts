@@ -4,6 +4,16 @@ import { auth, db } from "../../../../lib/firebaseAdmin";
 import { Resend } from "resend";
 
 export async function POST(request: Request) {
+  const snapshot = await db.collection("applications").limit(10).get();
+
+  const visibleIds = snapshot.docs.map((d) => d.id);
+  
+  return NextResponse.json({
+    debug: true,
+    visibleApplicationIds: visibleIds,
+  });
+
+  
   try {
     const data = (await request.json()) as { applicationId?: string };
     const applicationId = data.applicationId;
