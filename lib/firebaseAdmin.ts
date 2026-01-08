@@ -27,4 +27,5 @@ globalForFirebaseAdmin.firebaseAdminApp = firebaseAdminApp;
 
 export const auth = firebaseAdminApp.auth();
 export const db = firebaseAdminApp.firestore();
+export const serverTimestamp = admin.firestore.FieldValue.serverTimestamp;
 export default firebaseAdminApp;
