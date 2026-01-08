@@ -3,6 +3,10 @@ import admin from "firebase-admin";
 import { auth, db } from "../../../../lib/firebaseAdmin";
 import { Resend } from "resend";
 
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const rateLimitByEmail = new Map<string, number[]>();
+
 export async function POST(request: Request) {
   try {
     const ADMIN_EMAILS = ["nick@vantra.app", "anton@vantra.app"];
@@ -28,6 +32,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    const now = Date.now();
+    const recentAttempts = rateLimitByEmail
+      .get(emailFromToken)
+      ?.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS) ?? [];
+
+    if (recentAttempts.length >= RATE_LIMIT_MAX_REQUESTS) {
+      return NextResponse.json(
+        { error: "Too many approval attempts" },
+        { status: 429 }
+      );
+    }
+
+    recentAttempts.push(now);
+    rateLimitByEmail.set(emailFromToken, recentAttempts);
+
     const data = (await request.json()) as { applicationId?: string };
     const applicationId = data.applicationId;
 
@@ -51,10 +70,16 @@ export async function POST(request: Request) {
     const applicationData = applicationSnapshot.data() as {
       email?: string;
       fullName?: string;
+      status?: string;
     };
 
     const email = applicationData.email;
     const name = applicationData.fullName;
+    const status = applicationData.status;
+
+    if (status === "approved") {
+      return NextResponse.json({ success: true });
+    }
 
     if (!email || !name) {
       return NextResponse.json(
