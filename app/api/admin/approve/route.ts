@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       from: "Vantra <info@vantra.app>",
       to: email,
       template: {
-        id: "vantra.application.approved",
+        id: "27d59f28-3ccc-4005-a6b9-87dc285f83c9",
         variables: {
           name,
           reset_url: resetUrl,
