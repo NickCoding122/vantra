@@ -28,11 +28,12 @@ export async function POST(request: Request) {
 
     const applicationData = applicationSnapshot.data() as {
       email?: string;
-      name?: string;
+      fullName?: string;
     };
-
+    
     const email = applicationData.email;
-    const name = applicationData.name;
+    const name = applicationData.fullName;
+
 
     if (!email || !name) {
       return NextResponse.json(
