@@ -5,6 +5,29 @@ import { Resend } from "resend";
 
 export async function POST(request: Request) {
   try {
+    const ADMIN_EMAILS = ["nick@vantra.app", "anton@vantra.app"];
+    const authHeader = request.headers.get("authorization");
+    const token = authHeader?.startsWith("Bearer ")
+      ? authHeader.slice("Bearer ".length)
+      : null;
+
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    let decodedToken: { email?: string };
+    try {
+      decodedToken = await auth.verifyIdToken(token);
+    } catch (error) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const emailFromToken = decodedToken.email;
+
+    if (!emailFromToken || !ADMIN_EMAILS.includes(emailFromToken)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const data = (await request.json()) as { applicationId?: string };
     const applicationId = data.applicationId;
 
