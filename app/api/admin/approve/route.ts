@@ -5,22 +5,6 @@ import { Resend } from "resend";
 
 export async function POST(request: Request) {
   try {
-    // ---- DIAGNOSTIC MODE ----
-    // List visible application IDs from Firestore
-    const snapshot = await db.collection("applications").limit(10).get();
-
-    const visibleApplicationIds = snapshot.docs.map((doc) => doc.id);
-
-    return NextResponse.json({
-      debug: true,
-      visibleApplicationIds,
-    });
-
-    // ---- NORMAL APPROVAL LOGIC (TEMPORARILY DISABLED) ----
-    // Everything below is intentionally unreachable for now.
-    // Do not delete it — we will re-enable it once diagnostics are done.
-
-    /*
     const data = (await request.json()) as { applicationId?: string };
     const applicationId = data.applicationId;
 
@@ -94,7 +78,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true });
-    */
+    
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Unknown server error";
