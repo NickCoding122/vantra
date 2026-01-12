@@ -1,49 +1,23 @@
 import { NextResponse } from "next/server";
-import { auth, db } from "../../../../lib/firebaseAdmin";
+import { auth } from "../../../../lib/firebaseAdmin";
 
-export async function POST(req: Request) {
-  const { token } = await req.json();
-
-  if (!token) {
-    return NextResponse.json({ error: "Missing token" }, { status: 400 });
-  }
-
-  const snapshot = await db
-    .collection("applications")
-    .where("approvalToken", "==", token)
-    .limit(1)
-    .get();
-
-  if (snapshot.empty) {
-    return NextResponse.json({ error: "Invalid or expired link" }, { status: 400 });
-  }
-
-  const doc = snapshot.docs[0];
-  const data = doc.data();
-
-  if (!data.email) {
-    return NextResponse.json({ error: "Invalid application" }, { status: 400 });
-  }
-
-  // Ensure user exists
+export async function POST(request: Request) {
   try {
-    await auth.getUserByEmail(data.email);
-  } catch {
-    await auth.createUser({
-      email: data.email,
-      emailVerified: true,
-    });
+    const { oobCode, password } = await request.json();
+
+    if (!oobCode || !password) {
+      return NextResponse.json(
+        { error: "Missing token or password" },
+        { status: 400 }
+      );
+    }
+
+    await auth.confirmPasswordReset(oobCode, password);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Invalid or expired link";
+    return NextResponse.json({ error: message }, { status: 400 });
   }
-
-  // Generate reset link NOW (human confirmed)
-  const resetUrl = await auth.generatePasswordResetLink(data.email, {
-    url: `${process.env.NEXT_PUBLIC_APP_URL}/login`,
-  });
-
-  // Burn the token
-  await doc.ref.update({
-    approvalToken: null,
-  });
-
-  return NextResponse.json({ redirectUrl: resetUrl });
 }
