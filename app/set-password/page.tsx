@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getAuth, confirmPasswordReset } from "firebase/auth";
-import "@/lib/firebaseClient"; // IMPORTANT: ensures client SDK is initialised
+import "../../../../../lib/firebaseClient"; // IMPORTANT: ensures client SDK is initialised
 
 function SetPasswordInner() {
   const searchParams = useSearchParams();
