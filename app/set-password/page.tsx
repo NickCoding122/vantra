@@ -1,10 +1,93 @@
+"use client";
+
 import { Suspense } from "react";
-import SetPasswordClient from "./SetPasswordClient";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+
+function SetPasswordInner() {
+  const searchParams = useSearchParams();
+  const oobCode = searchParams.get("oobCode");
+
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  async function submit() {
+    if (!oobCode) {
+      setError("Invalid or missing token.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const res = await fetch("/api/auth/set-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ oobCode, password }),
+    });
+
+    const json = await res.json();
+
+    if (!res.ok) {
+      setError(json.error || "Something went wrong.");
+      setLoading(false);
+      return;
+    }
+
+    setSuccess(true);
+    setLoading(false);
+  }
+
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="w-full max-w-sm space-y-6">
+        <h1 className="text-white text-2xl font-semibold">
+          Set your password
+        </h1>
+
+        {success ? (
+          <p className="text-white">
+            Password set successfully. You can now log in.
+          </p>
+        ) : (
+          <>
+            <input
+              type="password"
+              placeholder="Enter a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-lg bg-white text-black placeholder-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white"
+            />
+
+            {error && (
+              <p className="text-red-400 text-sm">{error}</p>
+            )}
+
+            <button
+              onClick={submit}
+              disabled={loading}
+              className="w-full rounded-lg bg-white text-black py-3 font-medium disabled:opacity-50"
+            >
+              {loading ? "Setting password…" : "Set password"}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function SetPasswordPage() {
   return (
-    <Suspense fallback={<div style={{ padding: 24 }}>Loading…</div>}>
-      <SetPasswordClient />
+    <Suspense fallback={null}>
+      <SetPasswordInner />
     </Suspense>
   );
 }
