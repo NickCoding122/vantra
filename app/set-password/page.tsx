@@ -1,8 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { getAuth, confirmPasswordReset } from "firebase/auth";
+import "../../../../lib/firebaseClient"; // IMPORTANT: ensures client SDK is initialised
 
 function SetPasswordInner() {
   const searchParams = useSearchParams();
@@ -27,22 +28,15 @@ function SetPasswordInner() {
     setLoading(true);
     setError(null);
 
-    const res = await fetch("/api/auth/set-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ oobCode, password }),
-    });
-
-    const json = await res.json();
-
-    if (!res.ok) {
-      setError(json.error || "Something went wrong.");
+    try {
+      const auth = getAuth();
+      await confirmPasswordReset(auth, oobCode, password);
+      setSuccess(true);
+    } catch (err) {
+      setError("This link is invalid or has expired.");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setSuccess(true);
-    setLoading(false);
   }
 
   return (
