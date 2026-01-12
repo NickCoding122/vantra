@@ -108,16 +108,23 @@ export async function POST(request: Request) {
       });
     }
 
-    // Generate one-time approval token
-    const approvalToken = crypto.randomUUID();
+    const passwordSetupToken = crypto.randomUUID();
+    const passwordSetupTokenHash = crypto
+      .createHash("sha256")
+      .update(passwordSetupToken)
+      .digest("hex");
+    const passwordSetupExpiresAt = admin.firestore.Timestamp.fromDate(
+      new Date(Date.now() + 15 * 60 * 1000)
+    );
 
     await applicationRef.update({
       status: "approved",
       approvedAt: admin.firestore.FieldValue.serverTimestamp(),
-      approvalToken,
+      passwordSetupTokenHash,
+      passwordSetupExpiresAt,
     });
 
-    const setPasswordUrl = `${process.env.NEXT_PUBLIC_APP_URL}/set-password?t=${approvalToken}`;
+    const setPasswordUrl = `https://vantra.app/set-password?token=${passwordSetupToken}`;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
