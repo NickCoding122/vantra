@@ -1,101 +1,112 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import type { FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
-import { confirmPasswordReset, getAuth } from "firebase/auth";
-import "../../lib/firebaseClient";
 
 function SetPasswordForm() {
   const searchParams = useSearchParams();
-  const oobCode = searchParams.get("oobCode");
+  const token = searchParams.get("token") ?? "";
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
 
-    if (!oobCode) {
-      setError("Invalid or missing password reset code.");
+    if (!token) {
+      setError("Missing token. Please use the link from your email.");
       return;
     }
 
-    if (!password) {
-      setError("Please enter a password.");
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
     setIsSubmitting(true);
+
     try {
-      const auth = getAuth();
-      await confirmPasswordReset(auth, oobCode, password);
+      const response = await fetch("/api/auth/set-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, password }),
+      });
+
+      const data = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        setError(data.error ?? "Unable to set password.");
+        return;
+      }
+
       setSuccess(true);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unable to set password.";
-      setError(message);
+      setPassword("");
+    } catch {
+      setError("Unable to set password. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (success) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
-        <div className="w-full max-w-md space-y-4 text-center">
-          <h1 className="text-2xl font-semibold">Password set</h1>
-          <p>Your password has been updated. You can now log in.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black text-white">
-      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-semibold">Set your password</h1>
-        <div className="space-y-2">
-          <label htmlFor="password" className="block text-sm font-medium">
-            New password
+    <div className="w-full max-w-md space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-semibold">Set your password</h1>
+        <p className="text-sm text-white/70">
+          Create a password to activate your Vantra account.
+        </p>
+      </div>
+
+      {success ? (
+        <div className="space-y-3">
+          <p className="text-sm text-emerald-300">
+            Password set successfully.
+          </p>
+          <p className="text-sm text-white/70">
+            You can now sign in. Return to the app to continue.
+          </p>
+        </div>
+      ) : (
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <label className="block text-sm font-medium" htmlFor="password">
+            Password
           </label>
           <input
             id="password"
-            name="password"
-            type="text"
+            type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="w-full rounded border border-white/20 bg-black px-3 py-2 text-white"
-            placeholder="Enter your new password"
+            className="w-full rounded border border-white/30 bg-black px-3 py-2 text-white placeholder:text-white/40 focus:border-white focus:outline-none"
+            placeholder="At least 8 characters"
+            required
           />
-        </div>
-        {error ? (
-          <div className="rounded border border-red-500/60 bg-red-500/10 px-3 py-2 text-sm text-red-200">
-            {error}
-          </div>
-        ) : null}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded bg-white px-4 py-2 text-black transition disabled:opacity-60"
-        >
-          {isSubmitting ? "Setting password..." : "Set password"}
-        </button>
-      </form>
+
+          {error ? <p className="text-sm text-red-400">{error}</p> : null}
+
+          <button
+            type="submit"
+            className="w-full rounded border border-white py-2 text-sm uppercase tracking-[0.2em] transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Setting password..." : "Set password"}
+          </button>
+        </form>
+      )}
     </div>
   );
 }
 
 export default function SetPasswordPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center bg-black text-white">
-          <p>Loading...</p>
-        </div>
-      }
-    >
-      <SetPasswordForm />
-    </Suspense>
+    <div className="flex min-h-screen items-center justify-center bg-black px-6 py-12 text-white">
+      <Suspense fallback={<div className="text-sm text-white/70">Loading…</div>}>
+        <SetPasswordForm />
+      </Suspense>
+    </div>
   );
 }
