@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import admin from "firebase-admin";
+import crypto from "crypto";
 import { auth, db } from "../../../../lib/firebaseAdmin";
 import { Resend } from "resend";
 
@@ -10,6 +11,7 @@ const rateLimitByEmail = new Map<string, number[]>();
 export async function POST(request: Request) {
   try {
     const ADMIN_EMAILS = ["nick@vantra.app", "anton@vantra.app"];
+
     const authHeader = request.headers.get("authorization");
     const token = authHeader?.startsWith("Bearer ")
       ? authHeader.slice("Bearer ".length)
@@ -22,20 +24,22 @@ export async function POST(request: Request) {
     let decodedToken: { email?: string };
     try {
       decodedToken = await auth.verifyIdToken(token);
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const emailFromToken = decodedToken.email;
+    const adminEmail = decodedToken.email;
 
-    if (!emailFromToken || !ADMIN_EMAILS.includes(emailFromToken)) {
+    if (!adminEmail || !ADMIN_EMAILS.includes(adminEmail)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    // Rate limiting
     const now = Date.now();
-    const recentAttempts = rateLimitByEmail
-      .get(emailFromToken)
-      ?.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS) ?? [];
+    const recentAttempts =
+      rateLimitByEmail
+        .get(adminEmail)
+        ?.filter((t) => now - t < RATE_LIMIT_WINDOW_MS) ?? [];
 
     if (recentAttempts.length >= RATE_LIMIT_MAX_REQUESTS) {
       return NextResponse.json(
@@ -45,10 +49,11 @@ export async function POST(request: Request) {
     }
 
     recentAttempts.push(now);
-    rateLimitByEmail.set(emailFromToken, recentAttempts);
+    rateLimitByEmail.set(adminEmail, recentAttempts);
 
-    const data = (await request.json()) as { applicationId?: string };
-    const applicationId = data.applicationId;
+    const { applicationId } = (await request.json()) as {
+      applicationId?: string;
+    };
 
     if (!applicationId) {
       return NextResponse.json(
@@ -77,6 +82,7 @@ export async function POST(request: Request) {
     const name = applicationData.fullName;
     const status = applicationData.status;
 
+    // Idempotency
     if (status === "approved") {
       return NextResponse.json({ success: true });
     }
@@ -88,11 +94,11 @@ export async function POST(request: Request) {
       );
     }
 
+    // Ensure user exists (but DO NOT generate reset link here)
     try {
       await auth.getUserByEmail(email);
-    } catch (error) {
-      const authError = error as { code?: string };
-      if (authError.code !== "auth/user-not-found") {
+    } catch (error: any) {
+      if (error.code !== "auth/user-not-found") {
         throw error;
       }
 
@@ -102,14 +108,16 @@ export async function POST(request: Request) {
       });
     }
 
-    const resetUrl = await auth.generatePasswordResetLink(email, {
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/login`,
-    });
+    // Generate one-time approval token
+    const approvalToken = crypto.randomUUID();
 
     await applicationRef.update({
       status: "approved",
       approvedAt: admin.firestore.FieldValue.serverTimestamp(),
+      approvalToken,
     });
+
+    const setPasswordUrl = `${process.env.NEXT_PUBLIC_APP_URL}/set-password?t=${approvalToken}`;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -120,13 +128,12 @@ export async function POST(request: Request) {
         id: "27d59f28-3ccc-4005-a6b9-87dc285f83c9",
         variables: {
           name,
-          reset_url: resetUrl,
+          set_password_url: setPasswordUrl,
         },
       },
     });
 
     return NextResponse.json({ success: true });
-    
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Unknown server error";
