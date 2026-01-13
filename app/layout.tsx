@@ -16,12 +16,20 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main className="min-h-screen bg-black text-white flex justify-center">
-          <div className="w-full max-w-[480px] md:max-w-[720px] px-6 py-10 md:py-20 flex flex-col gap-12">
+          <div className="w-full max-w-[480px] md:max-w-[720px] px-6 py-10 md:py-20 flex flex-col gap-12 min-h-screen">
             <header className="flex items-center justify-between mb-16">
               <div className="text-xs tracking-[0.25em] uppercase">VANTRA</div>
               <Nav />
             </header>
             {children}
+            <footer className="mt-auto">
+              <a
+                className="text-xs text-white/70 hover:text-white/90 transition-opacity"
+                href="/privacy"
+              >
+                Privacy
+              </a>
+            </footer>
           </div>
         </main>
       </body>
