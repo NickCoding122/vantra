@@ -79,7 +79,7 @@ export default function ApplyPage() {
         />
         <input
           name="niche"
-          placeholder="Niche (runway, commercial, editorial...)"
+          placeholder="Focus (runway, commercial, editorial...)"
           className="w-full border border-white/60 bg-transparent text-sm px-3 py-2 placeholder:opacity-70 outline-none rounded-none"
         />
         <input
