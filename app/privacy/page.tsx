@@ -78,7 +78,28 @@ export default function PrivacyPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="text-lg md:text-xl font-medium text-white">
-            3. Sharing of Information
+            3. Push Notifications
+          </h2>
+          <p>Vantra may send push notifications to inform users about:</p>
+          <ul className="list-disc pl-5">
+            <li>New messages or interactions</li>
+            <li>Account-related activity</li>
+            <li>Important service updates or announcements</li>
+          </ul>
+          <p>
+            Push notifications rely on device tokens provided by your operating
+            system. These tokens are used solely to deliver notifications and
+            are not used for tracking, profiling, or advertising.
+          </p>
+          <p>
+            You can enable or disable push notifications at any time through
+            your device settings.
+          </p>
+        </section>
+
+        <section className="flex flex-col gap-4">
+          <h2 className="text-lg md:text-xl font-medium text-white">
+            4. Sharing of Information
           </h2>
           <p>
             Your profile information is visible only to other verified users
@@ -91,7 +112,7 @@ export default function PrivacyPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="text-lg md:text-xl font-medium text-white">
-            4. Data Retention
+            5. Data Retention
           </h2>
           <p>
             We retain your information only for as long as your account is
@@ -103,7 +124,7 @@ export default function PrivacyPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="text-lg md:text-xl font-medium text-white">
-            5. Account Deletion
+            6. Account Deletion
           </h2>
           <p>
             Users can delete their account and associated data at any time
@@ -113,7 +134,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">6. Security</h2>
+          <h2 className="text-lg md:text-xl font-medium text-white">7. Security</h2>
           <p>
             We take reasonable technical and organisational measures to protect
             your information from unauthorised access, loss, or misuse. However,
@@ -123,7 +144,7 @@ export default function PrivacyPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="text-lg md:text-xl font-medium text-white">
-            7. Third-Party Services
+            8. Third-Party Services
           </h2>
           <p>
             Vantra uses Firebase for analytics and app performance monitoring.
@@ -134,7 +155,7 @@ export default function PrivacyPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="text-lg md:text-xl font-medium text-white">
-            8. Changes to This Policy
+            9. Changes to This Policy
           </h2>
           <p>
             We may update this Privacy Policy from time to time. Any changes
@@ -144,7 +165,7 @@ export default function PrivacyPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="text-lg md:text-xl font-medium text-white">
-            9. Contact Us
+            10. Contact Us
           </h2>
           <p>
             If you have any questions about this Privacy Policy or your data,
