@@ -22,12 +22,13 @@ export default function RootLayout({
               <Nav />
             </header>
             {children}
-            <footer className="mt-auto">
-              <a
-                className="text-xs text-white/70 hover:text-white/90 transition-opacity"
-                href="/privacy"
-              >
+            <footer className="mt-auto flex items-center gap-4 text-xs text-white/70">
+              <a className="hover:text-white/90 transition-opacity" href="/privacy">
                 Privacy
+              </a>
+              <span aria-hidden="true">•</span>
+              <a className="hover:text-white/90 transition-opacity" href="/terms">
+                Terms of Service
               </a>
             </footer>
           </div>
