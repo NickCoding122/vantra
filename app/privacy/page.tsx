@@ -2,7 +2,7 @@ export default function PrivacyPage() {
   return (
     <section className="w-full max-w-[700px] mx-auto flex flex-col gap-10">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+        <h1 className="title-vantra text-3xl md:text-4xl font-semibold tracking-tight">
           Privacy Policy
         </h1>
         <p className="text-sm md:text-base text-white/80">
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         </p>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             1. Information We Collect
           </h2>
           <p>When you use Vantra, we may collect the following information:</p>
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             2. How We Use Your Information
           </h2>
           <p>We use your information to:</p>
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             3. Push Notifications
           </h2>
           <p>Vantra may send push notifications to inform users about:</p>
@@ -98,7 +98,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             4. Sharing of Information
           </h2>
           <p>
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             5. Data Retention
           </h2>
           <p>
@@ -123,7 +123,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             6. Account Deletion
           </h2>
           <p>
@@ -134,7 +134,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">7. Security</h2>
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">7. Security</h2>
           <p>
             We take reasonable technical and organisational measures to protect
             your information from unauthorised access, loss, or misuse. However,
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             8. Third-Party Services
           </h2>
           <p>
@@ -154,7 +154,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             9. Changes to This Policy
           </h2>
           <p>
@@ -164,7 +164,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             10. Contact Us
           </h2>
           <p>

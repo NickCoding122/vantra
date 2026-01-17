@@ -7,7 +7,12 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-vantra-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-vantra-serif)", "Georgia", "serif"]
+      }
+    }
   },
   plugins: []
 };

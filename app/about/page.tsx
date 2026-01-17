@@ -1,7 +1,7 @@
 export default function AboutPage() {
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-2xl md:text-3xl font-semibold leading-snug max-w-[18ch]">
+      <h1 className="title-vantra text-2xl md:text-3xl font-semibold leading-snug max-w-[18ch]">
         Built for models, by models.
       </h1>
 

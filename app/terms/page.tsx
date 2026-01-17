@@ -2,7 +2,7 @@ export default function TermsPage() {
   return (
     <section className="w-full max-w-[700px] mx-auto flex flex-col gap-10">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+        <h1 className="title-vantra text-3xl md:text-4xl font-semibold tracking-tight">
           Terms of Service
         </h1>
         <p className="text-sm md:text-base text-white/80">
@@ -20,7 +20,7 @@ export default function TermsPage() {
         <p>If you do not agree to these Terms, you may not use the app.</p>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             1. The Vantra Platform
           </h2>
           <p>
@@ -36,7 +36,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             2. Eligibility
           </h2>
           <p>By using Vantra, you confirm that:</p>
@@ -49,7 +49,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             3. Accounts and Verification
           </h2>
           <p>You are responsible for:</p>
@@ -65,7 +65,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             4. User Conduct
           </h2>
           <p>You agree not to:</p>
@@ -80,7 +80,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             5. Messaging and Interactions
           </h2>
           <p>Vantra enables private messaging between users where permitted.</p>
@@ -99,7 +99,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             6. Content Responsibility
           </h2>
           <p>
@@ -114,7 +114,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             7. Account Suspension and Termination
           </h2>
           <p>We may suspend or terminate your account if:</p>
@@ -130,7 +130,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             8. Availability and Changes
           </h2>
           <p>Vantra is provided on an “as is” and “as available” basis.</p>
@@ -144,7 +144,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             9. Limitation of Liability
           </h2>
           <p>To the maximum extent permitted by law:</p>
@@ -156,7 +156,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">10. Privacy</h2>
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">10. Privacy</h2>
           <p>
             Your use of Vantra is also governed by our Privacy Policy, which
             explains how we collect and process personal data.
@@ -164,7 +164,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
             11. Changes to These Terms
           </h2>
           <p>
@@ -174,7 +174,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg md:text-xl font-medium text-white">12. Contact</h2>
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">12. Contact</h2>
           <p>If you have questions about these Terms, contact us at:</p>
           <p>
             Email:{" "}

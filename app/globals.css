@@ -13,7 +13,6 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: #000000;
   color: #ffffff;
 }
@@ -21,4 +20,21 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.logo-vantra {
+  font-family: var(--font-vantra-serif);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.title-vantra {
+  font-family: var(--font-vantra-serif);
+  font-weight: 500;
+}
+
+.body-vantra {
+  font-family: var(--font-vantra-sans);
+  font-weight: 400;
 }

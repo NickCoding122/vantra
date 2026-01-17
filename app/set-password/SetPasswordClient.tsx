@@ -54,7 +54,7 @@ export default function SetPasswordClient() {
       }}
     >
       <div style={{ width: 320 }}>
-        <h1 style={{ marginBottom: 16 }}>Set your password</h1>
+        <h1 className="title-vantra text-2xl font-semibold mb-4">Set your password</h1>
 
         <input
           type="password"
