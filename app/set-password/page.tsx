@@ -56,7 +56,7 @@ function SetPasswordForm() {
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold">Set your password</h1>
+        <h1 className="title-vantra text-3xl font-semibold">Set your password</h1>
         <p className="text-sm text-white/70">
           Create a password to activate your Vantra account.
         </p>

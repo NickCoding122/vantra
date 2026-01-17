@@ -50,7 +50,7 @@ export default function ApplyPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <h1 className="text-2xl md:text-3xl font-semibold leading-snug max-w-[18ch]">
+      <h1 className="title-vantra text-2xl md:text-3xl font-semibold leading-snug max-w-[18ch]">
         Join the private network.
       </h1>
 

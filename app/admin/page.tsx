@@ -8,7 +8,7 @@ export default async function AdminPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl md:text-3xl font-semibold">
+        <h1 className="title-vantra text-2xl md:text-3xl font-semibold">
           Admin Dashboard — Welcome, {email}
         </h1>
         <p className="text-sm opacity-75">

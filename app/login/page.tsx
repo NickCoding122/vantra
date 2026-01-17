@@ -4,7 +4,7 @@ export default function LoginPage() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center text-center gap-6">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+        <h1 className="title-vantra text-4xl md:text-5xl font-semibold leading-tight">
           Your password is set
         </h1>
         <p className="text-sm md:text-base opacity-90 max-w-[32ch]">
