@@ -6,6 +6,7 @@ import { vantraSans, vantraSerif } from "./fonts";
 export const metadata: Metadata = {
   title: "Vantra",
   description: "A private network for models and industry associates.",
+  manifest: "/site.webmanifest",
   icons: {
     icon: [
       {
