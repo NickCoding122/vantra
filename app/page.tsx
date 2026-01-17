@@ -44,7 +44,7 @@ export default function Home() {
             Where visionaries connect, <em className="italic">creativity flourishes</em>
           </h2>
           <p className="body-vantra mt-6 text-sm md:text-base leading-8 text-white/70">
-            Vantra is an exclusive sanctuary for fashion's most discerning minds. A
+            Vantra is an exclusive sanctuary for fashion&apos;s most discerning minds. A
             private collective where designers, creatives, and connoisseurs converge
             to shape the future of style. Here, connections transcend the ordinary,
             and every interaction is an opportunity to inspire.
