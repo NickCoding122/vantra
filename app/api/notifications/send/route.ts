@@ -108,7 +108,8 @@ export async function POST(request: Request) {
     const dataPayload: Record<string, string> = {};
 
     if (type === "message") {
-      const { threadId, otherUserId, otherUserName } = payload;
+      const { threadId, otherUserId, otherUserName } =
+        payload as ChatMessagePayload;
       dataPayload.type = "chat_message";
       dataPayload.threadId = String(threadId);
       dataPayload.otherUserId = String(otherUserId);
@@ -116,7 +117,7 @@ export async function POST(request: Request) {
     }
 
     if (type === "connection_request") {
-      const { fromUserId, fromName } = payload;
+      const { fromUserId, fromName } = payload as ConnectionRequestPayload;
       dataPayload.type = "connection_request";
       dataPayload.fromUserId = String(fromUserId);
       dataPayload.fromName = String(fromName);
