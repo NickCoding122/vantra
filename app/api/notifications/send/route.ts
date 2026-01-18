@@ -53,7 +53,9 @@ export async function POST(request: Request) {
     }
 
     if (type === "message") {
-      const { threadId, otherUserId, otherUserName } = payload;
+      const { threadId, otherUserId, otherUserName } =
+        payload as ChatMessagePayload;
+    
       if (!threadId || !otherUserId || !otherUserName) {
         return NextResponse.json(
           {
@@ -66,7 +68,9 @@ export async function POST(request: Request) {
     }
 
     if (type === "connection_request") {
-      const { fromUserId, fromName } = payload;
+      const { fromUserId, fromName } =
+        payload as ConnectionRequestPayload;
+    
       if (!fromUserId || !fromName) {
         return NextResponse.json(
           {
@@ -77,7 +81,6 @@ export async function POST(request: Request) {
         );
       }
     }
-
     const userDoc = await db.collection("users").doc(recipientUserId).get();
 
     if (!userDoc.exists) {
