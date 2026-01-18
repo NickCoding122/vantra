@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 import Nav from "../components/Nav";
 import { vantraSans, vantraSerif } from "./fonts";
@@ -42,14 +43,26 @@ export default function RootLayout({
               <Nav />
             </header>
             {children}
-            <footer className="mt-auto flex items-center gap-4 text-xs text-white/70">
-              <a className="hover:text-white/90 transition-opacity" href="/privacy">
-                Privacy
-              </a>
-              <span aria-hidden="true">•</span>
-              <a className="hover:text-white/90 transition-opacity" href="/terms">
-                Terms of Service
-              </a>
+            <footer className="mt-auto w-full text-white">
+              <div className="flex w-full flex-col gap-8">
+                <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+                  <p className="logo-vantra text-sm tracking-[0.4em]">V A N T R A</p>
+                  <div className="flex gap-6 text-sm uppercase tracking-[0.3em] text-white/70">
+                    <Link href="/privacy" className="hover:opacity-80">
+                      Privacy
+                    </Link>
+                    <Link href="/terms" className="hover:opacity-80">
+                      Terms
+                    </Link>
+                    <Link href="/contact" className="hover:opacity-80">
+                      Contact
+                    </Link>
+                  </div>
+                </div>
+                <p className="text-center text-[10px] uppercase tracking-[0.3em] text-white/40">
+                  © 2026 Vantra. All rights reserved.
+                </p>
+              </div>
             </footer>
           </div>
         </main>
