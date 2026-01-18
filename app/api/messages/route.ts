@@ -37,48 +37,55 @@ export async function POST(request: Request) {
         createdAt: serverTimestamp(),
       });
 
-    const notificationUrl = new URL("/api/notifications/send", request.url);
+    let notificationSent = false;
+    if (senderUserId !== recipientUserId) {
+      const notificationUrl = new URL("/api/notifications/send", request.url);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-    console.info("notifications.send.request", {
-      threadId,
-      recipientUserId,
-      senderUserId,
-    });
+      try {
+        const notificationResponse = await fetch(notificationUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            recipientUserId,
+            type: "message",
+            threadId,
+            otherUserId: senderUserId,
+            otherUserName: senderName,
+          }),
+          signal: controller.signal,
+        });
 
-    const notificationResponse = await fetch(notificationUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        recipientUserId,
-        type: "message",
-        threadId,
-        otherUserId: senderUserId,
-        otherUserName: senderName,
-      }),
-    });
+        notificationSent = notificationResponse.ok;
 
-    if (!notificationResponse.ok) {
-      console.warn("notifications.send.failed", {
-        threadId,
-        recipientUserId,
-        senderUserId,
-        status: notificationResponse.status,
-      });
-    } else {
-      console.info("notifications.send.completed", {
-        threadId,
-        recipientUserId,
-        senderUserId,
-      });
+        if (!notificationResponse.ok) {
+          console.warn("notifications.send.failed", {
+            threadId,
+            recipientUserId,
+            senderUserId,
+            status: notificationResponse.status,
+          });
+        }
+      } catch (error) {
+        console.warn("notifications.send.failed", {
+          threadId,
+          recipientUserId,
+          senderUserId,
+          error: error instanceof Error ? error.message : "unknown",
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
     }
 
     return NextResponse.json(
       {
         success: true,
         messageId: messageRef.id,
-        notificationSent: notificationResponse.ok,
+        notificationSent,
       },
       { status: 201 }
     );
