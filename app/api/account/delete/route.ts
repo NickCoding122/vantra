@@ -17,19 +17,27 @@ async function deleteDocumentWithSubcollections(docRef: DocumentReference) {
   await docRef.delete();
 }
 
+const userUploadPrefix = (uid: string) => `users/${uid}/`;
+
 async function deleteUserStorageFiles(uid: string) {
   const bucket = storage.bucket();
-  const [files] = await bucket.getFiles({ prefix: `users/${uid}/` });
+  const prefix = userUploadPrefix(uid);
 
-  if (!files.length) {
-    return;
+  try {
+    const [files] = await bucket.getFiles({ prefix });
+
+    if (!files.length) {
+      return;
+    }
+
+    await Promise.all(
+      files.map(async (file) => {
+        await file.delete();
+      })
+    );
+  } catch (error) {
+    console.error("account.delete.storage.error", { error, uid, prefix });
   }
-
-  await Promise.all(
-    files.map(async (file) => {
-      await file.delete();
-    })
-  );
 }
 
 export async function POST(request: Request) {
@@ -64,8 +72,8 @@ export async function POST(request: Request) {
       await deleteDocumentWithSubcollections(userDocRef);
     }
 
-    await deleteUserStorageFiles(uid);
     await auth.deleteUser(uid);
+    void deleteUserStorageFiles(uid);
 
     return NextResponse.json({ success: true });
   } catch (error) {
