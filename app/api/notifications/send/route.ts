@@ -4,12 +4,22 @@ import { db } from "../../../../lib/firebaseAdmin";
 
 type NotificationType = "message" | "connection_request";
 
-type SendNotificationPayload = {
+type ChatMessagePayload = {
   recipientUserId?: string;
-  type?: NotificationType;
+  type?: "message";
   threadId?: string;
-  requestId?: string;
+  otherUserId?: string;
+  otherUserName?: string;
 };
+
+type ConnectionRequestPayload = {
+  recipientUserId?: string;
+  type?: "connection_request";
+  fromUserId?: string;
+  fromName?: string;
+};
+
+type SendNotificationPayload = ChatMessagePayload | ConnectionRequestPayload;
 
 const notificationCopy: Record<NotificationType, { title: string; body: string }> = {
   message: {
@@ -30,7 +40,6 @@ export async function POST(request: Request) {
     const payload = (await request.json()) as SendNotificationPayload;
     recipientUserId = payload.recipientUserId;
     type = payload.type;
-    const { threadId, requestId } = payload;
 
     if (!recipientUserId || !type) {
       return NextResponse.json(
@@ -41,6 +50,32 @@ export async function POST(request: Request) {
 
     if (type !== "message" && type !== "connection_request") {
       return NextResponse.json({ error: "Invalid notification type" }, { status: 400 });
+    }
+
+    if (type === "message") {
+      const { threadId, otherUserId, otherUserName } = payload;
+      if (!threadId || !otherUserId || !otherUserName) {
+        return NextResponse.json(
+          {
+            error:
+              "Missing required fields for message notification: threadId, otherUserId, otherUserName",
+          },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (type === "connection_request") {
+      const { fromUserId, fromName } = payload;
+      if (!fromUserId || !fromName) {
+        return NextResponse.json(
+          {
+            error:
+              "Missing required fields for connection request: fromUserId, fromName",
+          },
+          { status: 400 }
+        );
+      }
     }
 
     const userDoc = await db.collection("users").doc(recipientUserId).get();
@@ -67,16 +102,21 @@ export async function POST(request: Request) {
 
     const { title, body } = notificationCopy[type];
 
-    const dataPayload: Record<string, string> = {
-      type,
-    };
+    const dataPayload: Record<string, string> = {};
 
-    if (threadId) {
+    if (type === "message") {
+      const { threadId, otherUserId, otherUserName } = payload;
+      dataPayload.type = "chat_message";
       dataPayload.threadId = String(threadId);
+      dataPayload.otherUserId = String(otherUserId);
+      dataPayload.otherUserName = String(otherUserName);
     }
 
-    if (requestId) {
-      dataPayload.requestId = String(requestId);
+    if (type === "connection_request") {
+      const { fromUserId, fromName } = payload;
+      dataPayload.type = "connection_request";
+      dataPayload.fromUserId = String(fromUserId);
+      dataPayload.fromName = String(fromName);
     }
 
     const response = await admin.messaging().send({
@@ -86,6 +126,11 @@ export async function POST(request: Request) {
         body,
       },
       data: dataPayload,
+      apns: {
+        headers: {
+          "apns-priority": "10",
+        },
+      },
     });
 
     console.info("notifications.send.success", {
