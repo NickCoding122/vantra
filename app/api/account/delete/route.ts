@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { DocumentReference, Firestore } from "firebase-admin/firestore";
-import { auth, db } from "../../../../lib/firebaseAdmin";
+import { auth, db, storage } from "../../../../lib/firebaseAdmin";
 
 const AUTH_HEADER_PREFIX = "Bearer ";
 
@@ -15,6 +15,21 @@ async function deleteDocumentWithSubcollections(docRef: DocumentReference) {
   }
 
   await docRef.delete();
+}
+
+async function deleteUserStorageFiles(uid: string) {
+  const bucket = storage.bucket();
+  const [files] = await bucket.getFiles({ prefix: `users/${uid}/` });
+
+  if (!files.length) {
+    return;
+  }
+
+  await Promise.all(
+    files.map(async (file) => {
+      await file.delete();
+    })
+  );
 }
 
 export async function POST(request: Request) {
@@ -49,6 +64,7 @@ export async function POST(request: Request) {
       await deleteDocumentWithSubcollections(userDocRef);
     }
 
+    await deleteUserStorageFiles(uid);
     await auth.deleteUser(uid);
 
     return NextResponse.json({ success: true });
