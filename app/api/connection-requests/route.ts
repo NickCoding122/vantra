@@ -33,19 +33,21 @@ export async function POST(request: Request) {
       const notificationUrl = new URL("/api/notifications/send", request.url);
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 4000);
+      const notificationPayload = {
+        recipientUserId,
+        type: "connection_request",
+        fromUserId,
+        fromName,
+      };
 
       try {
+        console.info("connection.notifications.payload", notificationPayload);
         const notificationResponse = await fetch(notificationUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            recipientUserId,
-            type: "connection_request",
-            fromUserId,
-            fromName,
-          }),
+          body: JSON.stringify(notificationPayload),
           signal: controller.signal,
         });
 
