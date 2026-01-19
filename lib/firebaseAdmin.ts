@@ -9,13 +9,19 @@ if (!FIREBASE_SERVICE_ACCOUNT_JSON) {
 }
 
 let serviceAccount: admin.ServiceAccount;
-type ServiceAccountWithLegacyKey = admin.ServiceAccount & { private_key?: string };
+type ServiceAccountWithLegacyKey = admin.ServiceAccount & {
+  private_key?: string;
+  project_id?: string;
+};
 
 try {
   const parsedServiceAccount =
     JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON) as ServiceAccountWithLegacyKey;
   if (typeof parsedServiceAccount.private_key === "string" && !parsedServiceAccount.privateKey) {
     parsedServiceAccount.privateKey = parsedServiceAccount.private_key;
+  }
+  if (typeof parsedServiceAccount.project_id === "string" && !parsedServiceAccount.projectId) {
+    parsedServiceAccount.projectId = parsedServiceAccount.project_id;
   }
   serviceAccount = parsedServiceAccount;
 } catch (error) {
@@ -50,7 +56,7 @@ globalForFirebaseAdmin.firebaseAdminApp = firebaseAdminApp;
 
 if (didInitialize) {
   console.info("firebase.admin.initialized", {
-    projectId: serviceAccount.project_id,
+    projectId: serviceAccount.projectId,
   });
 }
 
