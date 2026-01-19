@@ -6,7 +6,6 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)]" />
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center lg:px-12">
-          <div className="logo-vantra text-sm tracking-[0.5em]">Vantra</div>
           <h1 className="logo-vantra mt-6 text-4xl md:text-6xl lg:text-7xl tracking-[0.3em]">
             V A N T R A
           </h1>
