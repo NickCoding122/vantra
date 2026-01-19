@@ -54,9 +54,12 @@ export default function RootLayout({
                     <Link href="/terms" className="hover:opacity-80">
                       Terms
                     </Link>
-                    <Link href="/contact" className="hover:opacity-80">
+                    <a
+                      href="mailto:info@vantra.app"
+                      className="hover:opacity-80"
+                    >
                       Contact
-                    </Link>
+                    </a>
                   </div>
                 </div>
                 <p className="text-center text-[10px] uppercase tracking-[0.3em] text-white/40">
