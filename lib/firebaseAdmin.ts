@@ -9,9 +9,15 @@ if (!FIREBASE_SERVICE_ACCOUNT_JSON) {
 }
 
 let serviceAccount: admin.ServiceAccount;
+type ServiceAccountWithLegacyKey = admin.ServiceAccount & { private_key?: string };
 
 try {
-  serviceAccount = JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON) as admin.ServiceAccount;
+  const parsedServiceAccount =
+    JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON) as ServiceAccountWithLegacyKey;
+  if (typeof parsedServiceAccount.private_key === "string" && !parsedServiceAccount.privateKey) {
+    parsedServiceAccount.privateKey = parsedServiceAccount.private_key;
+  }
+  serviceAccount = parsedServiceAccount;
 } catch (error) {
   const message = error instanceof Error ? error.message : "Unknown JSON parse error";
   throw new Error(
@@ -19,8 +25,8 @@ try {
   );
 }
 
-if (typeof serviceAccount.private_key === "string") {
-  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
+if (typeof serviceAccount.privateKey === "string") {
+  serviceAccount.privateKey = serviceAccount.privateKey.replace(/\\n/g, "\n");
 }
 
 const globalForFirebaseAdmin = globalThis as typeof globalThis & {
