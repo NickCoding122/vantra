@@ -1,31 +1,52 @@
 import admin from "firebase-admin";
 
-const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY } =
-  process.env;
+const { FIREBASE_SERVICE_ACCOUNT_JSON } = process.env;
 
-if (!FIREBASE_PROJECT_ID || !FIREBASE_CLIENT_EMAIL || !FIREBASE_PRIVATE_KEY) {
+if (!FIREBASE_SERVICE_ACCOUNT_JSON) {
   throw new Error(
-    "Missing Firebase Admin credentials. Ensure FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY are set."
+    "Missing Firebase Admin credentials. Ensure FIREBASE_SERVICE_ACCOUNT_JSON is set."
   );
+}
+
+let serviceAccount: admin.ServiceAccount;
+
+try {
+  serviceAccount = JSON.parse(FIREBASE_SERVICE_ACCOUNT_JSON) as admin.ServiceAccount;
+} catch (error) {
+  const message = error instanceof Error ? error.message : "Unknown JSON parse error";
+  throw new Error(
+    `Invalid FIREBASE_SERVICE_ACCOUNT_JSON value. Unable to parse JSON. ${message}`
+  );
+}
+
+if (typeof serviceAccount.private_key === "string") {
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
 }
 
 const globalForFirebaseAdmin = globalThis as typeof globalThis & {
   firebaseAdminApp?: admin.app.App;
 };
 
-const firebaseAdminApp =
-  globalForFirebaseAdmin.firebaseAdminApp ??
-  admin.initializeApp({
-    projectId: FIREBASE_PROJECT_ID,
-    credential: admin.credential.cert({
-      projectId: FIREBASE_PROJECT_ID,
-      clientEmail: FIREBASE_CLIENT_EMAIL,
-      privateKey: FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-    }),
-  });
+let firebaseAdminApp = globalForFirebaseAdmin.firebaseAdminApp;
+let didInitialize = false;
+
+if (!firebaseAdminApp) {
+  firebaseAdminApp = admin.apps.length
+    ? admin.app()
+    : admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+  didInitialize = true;
+}
 
 
 globalForFirebaseAdmin.firebaseAdminApp = firebaseAdminApp;
+
+if (didInitialize) {
+  console.info("firebase.admin.initialized", {
+    projectId: serviceAccount.project_id,
+  });
+}
 
 export const auth = firebaseAdminApp.auth();
 export const db = firebaseAdminApp.firestore();
