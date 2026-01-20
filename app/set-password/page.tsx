@@ -8,9 +8,15 @@ function SetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmTouched, setConfirmTouched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const passwordsMatch =
+    password.length > 0 &&
+    confirmPassword.length > 0 &&
+    password === confirmPassword;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,6 +52,8 @@ function SetPasswordForm() {
 
       setSuccess(true);
       setPassword("");
+      setConfirmPassword("");
+      setConfirmTouched(false);
     } catch {
       setError("Unable to set password. Please try again.");
     } finally {
@@ -85,13 +93,34 @@ function SetPasswordForm() {
             placeholder="At least 8 characters"
             required
           />
+          <label className="block text-sm font-medium" htmlFor="confirm-password">
+            Confirm password
+          </label>
+          <input
+            id="confirm-password"
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => {
+              setConfirmPassword(event.target.value);
+              if (!confirmTouched) {
+                setConfirmTouched(true);
+              }
+            }}
+            onBlur={() => setConfirmTouched(true)}
+            className="w-full rounded border border-white/30 bg-black px-3 py-2 text-white placeholder:text-white/40 focus:border-white focus:outline-none"
+            placeholder="Re-enter your password"
+            required
+          />
+          {confirmTouched && confirmPassword && !passwordsMatch ? (
+            <p className="text-sm text-red-400">Passwords do not match</p>
+          ) : null}
 
           {error ? <p className="text-sm text-red-400">{error}</p> : null}
 
           <button
             type="submit"
             className="w-full rounded border border-white py-2 text-sm uppercase tracking-[0.2em] transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !passwordsMatch}
           >
             {isSubmitting ? "Setting password..." : "Set password"}
           </button>
