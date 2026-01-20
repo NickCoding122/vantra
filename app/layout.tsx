@@ -21,10 +21,12 @@ export const metadata: Metadata = {
         type: "image/png"
       },
       {
-        url: "/favicon.ico"
+        url: "/favicon.ico",
+        type: "image/x-icon"
       }
     ],
-    apple: "/apple-touch-icon.png"
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico"
   }
 };
 
