@@ -132,7 +132,7 @@ function SetPasswordForm() {
 
 export default function SetPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black px-6 py-12 text-white">
+    <div className="flex min-h-screen items-start justify-center bg-black px-6 pb-12 pt-16 text-white">
       <Suspense fallback={<div className="text-sm text-white/70">Loading…</div>}>
         <SetPasswordForm />
       </Suspense>
