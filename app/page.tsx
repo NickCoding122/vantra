@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="flex flex-col text-white">
@@ -93,20 +95,12 @@ export default function Home() {
             Membership is by invitation or application. Submit your interest and
             our team will be in touch.
           </p>
-          <form className="mt-10 flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email address"
-              className="body-vantra w-full border border-black bg-transparent px-4 py-3 text-base uppercase tracking-[0.2em] text-black placeholder:text-black/40"
-            />
-            <button
-              type="submit"
-              className="body-vantra w-full bg-black px-6 py-3 text-sm uppercase tracking-[0.3em] text-white sm:w-auto"
-            >
-              Apply
-            </button>
-          </form>
+          <Link
+            href="/apply"
+            className="body-vantra mt-10 inline-flex w-full items-center justify-center border border-black bg-black px-10 py-4 text-sm uppercase tracking-[0.4em] text-white transition hover:bg-black/90 sm:w-auto"
+          >
+            Apply Now
+          </Link>
         </div>
       </section>
 
