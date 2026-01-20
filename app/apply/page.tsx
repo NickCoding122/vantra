@@ -53,9 +53,6 @@ export default function ApplyPage() {
       <section className="relative w-full overflow-hidden bg-black px-6 py-20 text-center md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)]" />
         <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center">
-          <p className="body-vantra text-sm uppercase tracking-[0.4em] text-white/60">
-            Application
-          </p>
           <h1 className="title-vantra mt-6 text-4xl md:text-6xl leading-tight">
             Join the private network.
           </h1>
