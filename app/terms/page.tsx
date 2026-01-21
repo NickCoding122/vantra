@@ -100,7 +100,34 @@ export default function TermsPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
-            6. Content Responsibility
+            6. Safety and Reporting
+          </h2>
+          <p>
+            Vantra has zero tolerance for objectionable content, harassment,
+            sexual exploitation, or abusive behavior.
+          </p>
+          <p>
+            Users may upload content and communicate with other users through the
+            app. Users may report objectionable content or abusive behavior
+            directly within the app using the reporting features provided.
+          </p>
+          <p>
+            All reports are reviewed by the Vantra team. Content that violates
+            these Terms may be removed, and the responsible account may be
+            suspended or permanently removed. Vantra commits to reviewing and
+            acting on all valid reports of objectionable content within 24 hours
+            of submission.
+          </p>
+          <p>
+            Vantra reserves the right to take appropriate action at its sole
+            discretion to maintain a safe and respectful environment for all
+            users.
+          </p>
+        </section>
+
+        <section className="flex flex-col gap-4">
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
+            7. Content Responsibility
           </h2>
           <p>
             You retain ownership of the content you submit. By posting content on
@@ -115,7 +142,7 @@ export default function TermsPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
-            7. Account Suspension and Termination
+            8. Account Suspension and Termination
           </h2>
           <p>We may suspend or terminate your account if:</p>
           <ul className="list-disc pl-5">
@@ -131,7 +158,7 @@ export default function TermsPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
-            8. Availability and Changes
+            9. Availability and Changes
           </h2>
           <p>Vantra is provided on an “as is” and “as available” basis.</p>
           <p>We may:</p>
@@ -145,7 +172,7 @@ export default function TermsPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
-            9. Limitation of Liability
+            10. Limitation of Liability
           </h2>
           <p>To the maximum extent permitted by law:</p>
           <ul className="list-disc pl-5">
@@ -156,7 +183,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">10. Privacy</h2>
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">11. Privacy</h2>
           <p>
             Your use of Vantra is also governed by our Privacy Policy, which
             explains how we collect and process personal data.
@@ -165,7 +192,7 @@ export default function TermsPage() {
 
         <section className="flex flex-col gap-4">
           <h2 className="title-vantra text-lg md:text-xl font-medium text-white">
-            11. Changes to These Terms
+            12. Changes to These Terms
           </h2>
           <p>
             We may update these Terms from time to time. Continued use of the app
@@ -174,7 +201,7 @@ export default function TermsPage() {
         </section>
 
         <section className="flex flex-col gap-4">
-          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">12. Contact</h2>
+          <h2 className="title-vantra text-lg md:text-xl font-medium text-white">13. Contact</h2>
           <p>If you have questions about these Terms, contact us at:</p>
           <p>
             Email:{" "}
