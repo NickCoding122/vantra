@@ -57,16 +57,32 @@ export async function POST(request: Request) {
         expiresAt,
         used: false,
       });
+      console.info("auth.request-reset.token-created", {
+        userId: userRecord.uid,
+      });
 
       const resetUrl = `https://vantra.app/reset-password?token=${resetToken}`;
 
       const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: "Vantra <info@vantra.app>",
-        to: email,
-        subject: "Reset your Vantra password",
-        text: `Reset your password using the link below:\n\n${resetUrl}\n\nIf you did not request this, you can ignore this email.`,
-      });
+      try {
+        await resend.emails.send({
+          from: "Vantra <info@vantra.app>",
+          to: email,
+          template_id: "fda23c26-32db-47ef-8e27-b0772ad3d558",
+          variables: {
+            email,
+            reset_url: resetUrl,
+          },
+        });
+        console.info("auth.request-reset.email-sent", {
+          userId: userRecord.uid,
+        });
+      } catch (error) {
+        console.error("auth.request-reset.email-failed", {
+          userId: userRecord.uid,
+          error,
+        });
+      }
     }
 
     return NextResponse.json({ success: true });
