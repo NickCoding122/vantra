@@ -10,6 +10,7 @@ type ChatMessagePayload = {
   threadId?: string;
   otherUserId?: string;
   otherUserName?: string;
+  messageText?: string;
 };
 
 type ConnectionRequestPayload = {
@@ -103,13 +104,17 @@ export async function POST(request: Request) {
       type,
     });
 
-    const { title, body } = notificationCopy[type];
+    let { title, body } = notificationCopy[type];
 
     const dataPayload: Record<string, string> = {};
 
     if (type === "message") {
-      const { threadId, otherUserId, otherUserName } =
+      const { threadId, otherUserId, otherUserName, messageText } =
         payload as ChatMessagePayload;
+      const messagePreview =
+        typeof messageText === "string" ? messageText.slice(0, 120) : "";
+      title = String(otherUserName);
+      body = messagePreview;
       dataPayload.type = "chat_message";
       dataPayload.threadId = String(threadId);
       dataPayload.otherUserId = String(otherUserId);

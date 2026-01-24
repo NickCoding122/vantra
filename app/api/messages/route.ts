@@ -55,6 +55,7 @@ export async function POST(request: Request) {
             threadId,
             otherUserId: senderUserId,
             otherUserName: senderName,
+            messageText: text,
           }),
           signal: controller.signal,
         });
