@@ -75,12 +75,26 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!tokenType) {
+      console.warn("Set password token validation failed: missing token type", {
+        applicationId: doc.id,
+        tokenType,
+      });
+      return NextResponse.json(
+        { error: "Token type is required" },
+        { status: 400 }
+      );
+    }
+
     if (tokenType !== "onboarding") {
       console.warn("Set password token validation failed: invalid token type", {
         applicationId: doc.id,
         tokenType,
       });
-      return NextResponse.json({ error: "Token is invalid" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Token type must be onboarding" },
+        { status: 400 }
+      );
     }
 
     if (!expiresAt) {
