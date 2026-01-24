@@ -72,7 +72,7 @@ export async function POST(request: Request) {
             id: "fda23c26-32db-47ef-8e27-b0772ad3d558",
             variables: {
               email,
-              reset_url: resetUrl,
+              resetUrl,
             },
           },
         });
