@@ -13,10 +13,16 @@ function SetPasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const hasMinLength = password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const meetsPasswordRequirements = hasMinLength && hasUppercase;
   const passwordsMatch =
     password.length > 0 &&
     confirmPassword.length > 0 &&
     password === confirmPassword;
+  const canSubmit = meetsPasswordRequirements && passwordsMatch && !isSubmitting;
+  const passwordErrorMessage =
+    "Password must be at least 8 characters and include an uppercase letter.";
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,8 +33,8 @@ function SetPasswordForm() {
       return;
     }
 
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (!meetsPasswordRequirements) {
+      setError(passwordErrorMessage);
       return;
     }
 
@@ -46,7 +52,17 @@ function SetPasswordForm() {
       const data = (await response.json()) as { error?: string };
 
       if (!response.ok) {
-        setError(data.error ?? "Unable to set password.");
+        const errorMessage = data.error ?? "Unable to set password.";
+        const normalizedMessage = errorMessage.toLowerCase();
+        if (
+          normalizedMessage.includes("password") ||
+          normalizedMessage.includes("uppercase") ||
+          normalizedMessage.includes("character")
+        ) {
+          setError(passwordErrorMessage);
+        } else {
+          setError(errorMessage);
+        }
         return;
       }
 
@@ -93,6 +109,19 @@ function SetPasswordForm() {
             placeholder="At least 8 characters"
             required
           />
+          <div className="space-y-1 text-xs text-white/70">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white/60">
+              Password requirements
+            </p>
+            <ul className="list-disc space-y-1 pl-4">
+              <li className={hasMinLength ? "text-emerald-300" : undefined}>
+                Minimum 8 characters
+              </li>
+              <li className={hasUppercase ? "text-emerald-300" : undefined}>
+                At least one uppercase letter
+              </li>
+            </ul>
+          </div>
           <label className="block text-sm font-medium" htmlFor="confirm-password">
             Confirm password
           </label>
@@ -120,7 +149,7 @@ function SetPasswordForm() {
           <button
             type="submit"
             className="w-full rounded border border-white py-2 text-sm uppercase tracking-[0.2em] transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
-            disabled={isSubmitting || !passwordsMatch}
+            disabled={!canSubmit}
           >
             {isSubmitting ? "Setting password..." : "Set password"}
           </button>
