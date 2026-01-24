@@ -26,6 +26,20 @@ export async function POST(request: Request) {
     }
 
     if (userRecord) {
+      const existingResets = await db
+        .collection("password_resets")
+        .where("userId", "==", userRecord.uid)
+        .where("used", "==", false)
+        .get();
+
+      if (!existingResets.empty) {
+        const batch = db.batch();
+        existingResets.docs.forEach((doc) => {
+          batch.update(doc.ref, { used: true });
+        });
+        await batch.commit();
+      }
+
       const resetToken = crypto.randomBytes(RESET_TOKEN_BYTES).toString("hex");
       const tokenHash = crypto
         .createHash("sha256")
