@@ -68,10 +68,12 @@ export async function POST(request: Request) {
         await resend.emails.send({
           from: "Vantra <info@vantra.app>",
           to: email,
-          template_id: "fda23c26-32db-47ef-8e27-b0772ad3d558",
-          variables: {
-            email,
-            reset_url: resetUrl,
+          template: {
+            id: "fda23c26-32db-47ef-8e27-b0772ad3d558",
+            variables: {
+              email,
+              reset_url: resetUrl,
+            },
           },
         });
         console.info("auth.request-reset.email-sent", {
