@@ -22,11 +22,10 @@ type ConnectionRequestPayload = {
 
 type SendNotificationPayload = ChatMessagePayload | ConnectionRequestPayload;
 
-const notificationCopy: Record<NotificationType, { title: string; body: string }> = {
-  message: {
-    title: "New message",
-    body: "You have a new message waiting.",
-  },
+const notificationCopy: Record<
+  Extract<NotificationType, "connection_request">,
+  { title: string; body: string }
+> = {
   connection_request: {
     title: "New connection request",
     body: "Someone wants to connect with you.",
@@ -104,7 +103,8 @@ export async function POST(request: Request) {
       type,
     });
 
-    let { title, body } = notificationCopy[type];
+    let title = "";
+    let body = "";
 
     const dataPayload: Record<string, string> = {};
 
@@ -123,6 +123,7 @@ export async function POST(request: Request) {
 
     if (type === "connection_request") {
       const { fromUserId, fromName } = payload as ConnectionRequestPayload;
+      ({ title, body } = notificationCopy.connection_request);
       dataPayload.type = "connection_request";
       dataPayload.fromUserId = String(fromUserId);
       dataPayload.fromName = String(fromName);
