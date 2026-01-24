@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "468R45CT9B.com.vantra.app",
+        "paths": ["/reset-password*"]
+      }
+    ]
+  }
+}
