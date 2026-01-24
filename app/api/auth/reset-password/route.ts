@@ -77,7 +77,18 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("auth.reset-password.error", { error });
+    const firebaseError = error as {
+      code?: string;
+      errorInfo?: { code?: string };
+    };
+    const errorCode = firebaseError?.code ?? firebaseError?.errorInfo?.code;
+
+    console.error("auth.reset-password.error", { error, errorCode });
+
+    if (errorCode === "PASSWORD_DOES_NOT_MEET_REQUIREMENTS") {
+      return NextResponse.json({ error: "password_invalid" }, { status: 400 });
+    }
+
     return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
   }
 }
