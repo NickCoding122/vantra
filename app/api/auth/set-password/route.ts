@@ -35,6 +35,9 @@ export async function POST(request: Request) {
       .get();
 
     if (snapshot.empty) {
+      console.warn("Set password token validation failed: token not found", {
+        tokenHash,
+      });
       return NextResponse.json(
         { error: "Token is invalid or already used" },
         { status: 400 }
@@ -45,21 +48,61 @@ export async function POST(request: Request) {
     const applicationData = doc.data() as {
       email?: string;
       passwordSetupExpiresAt?: admin.firestore.Timestamp;
+      passwordSetupTokenType?: string;
+      passwordSetupUsedAt?: admin.firestore.Timestamp;
+      status?: string;
     };
 
     const expiresAt = applicationData.passwordSetupExpiresAt;
+    const tokenType = applicationData.passwordSetupTokenType;
+    const status = applicationData.status;
+
+    if (status !== "approved") {
+      console.warn("Set password token validation failed: status not approved", {
+        applicationId: doc.id,
+        status,
+      });
+      return NextResponse.json({ error: "Token is invalid" }, { status: 400 });
+    }
+
+    if (applicationData.passwordSetupUsedAt) {
+      console.warn("Set password token validation failed: token already used", {
+        applicationId: doc.id,
+      });
+      return NextResponse.json(
+        { error: "Token is invalid or already used" },
+        { status: 400 }
+      );
+    }
+
+    if (tokenType !== "onboarding") {
+      console.warn("Set password token validation failed: invalid token type", {
+        applicationId: doc.id,
+        tokenType,
+      });
+      return NextResponse.json({ error: "Token is invalid" }, { status: 400 });
+    }
 
     if (!expiresAt) {
+      console.warn("Set password token validation failed: missing expiry", {
+        applicationId: doc.id,
+      });
       return NextResponse.json({ error: "Token is invalid" }, { status: 400 });
     }
 
     if (expiresAt.toMillis() < Date.now()) {
+      console.warn("Set password token validation failed: token expired", {
+        applicationId: doc.id,
+      });
       return NextResponse.json({ error: "Token has expired" }, { status: 400 });
     }
 
     const email = applicationData.email;
 
     if (!email) {
+      console.warn("Set password token validation failed: missing email", {
+        applicationId: doc.id,
+      });
       return NextResponse.json(
         { error: "Application missing email" },
         { status: 400 }
