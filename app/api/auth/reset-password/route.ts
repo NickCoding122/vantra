@@ -17,10 +17,7 @@ export async function POST(request: Request) {
         hasToken: Boolean(token),
         hasPassword: Boolean(password),
       });
-      return NextResponse.json(
-        { error: "Missing token or password" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
     }
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
@@ -33,10 +30,7 @@ export async function POST(request: Request) {
 
     if (snapshot.empty) {
       console.error("auth.reset-password.invalid-token", { tokenHash });
-      return NextResponse.json(
-        { error: "Token is invalid or expired" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
     }
 
     const doc = snapshot.docs[0];
@@ -52,18 +46,12 @@ export async function POST(request: Request) {
         tokenHash,
         type: resetData.type,
       });
-      return NextResponse.json(
-        { error: "Token is invalid or expired" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
     }
 
     if (resetData.used) {
       console.error("auth.reset-password.used-token", { tokenHash });
-      return NextResponse.json(
-        { error: "Token is invalid or expired" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
     }
 
     const expiresAt = resetData.expiresAt;
@@ -72,18 +60,12 @@ export async function POST(request: Request) {
         tokenHash,
         expiresAt: expiresAt?.toDate().toISOString(),
       });
-      return NextResponse.json(
-        { error: "Token is invalid or expired" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
     }
 
     if (!resetData.userId) {
       console.error("auth.reset-password.missing-user", { tokenHash });
-      return NextResponse.json(
-        { error: "Token is invalid or expired" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
     }
 
     await auth.updateUser(resetData.userId, { password });
@@ -96,6 +78,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("auth.reset-password.error", { error });
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({ error: "invalid_or_expired" }, { status: 400 });
   }
 }
