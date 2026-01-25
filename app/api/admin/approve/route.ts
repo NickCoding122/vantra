@@ -9,6 +9,8 @@ const RATE_LIMIT_MAX_REQUESTS = 5;
 const rateLimitByEmail = new Map<string, number[]>();
 
 export async function POST(request: Request) {
+  let requestBody: { applicationId?: string } | undefined;
+  let applicationId: string | undefined;
   try {
     const ADMIN_EMAILS = ["nick@vantra.app", "anton@vantra.app"];
 
@@ -51,9 +53,8 @@ export async function POST(request: Request) {
     recentAttempts.push(now);
     rateLimitByEmail.set(adminEmail, recentAttempts);
 
-    const { applicationId } = (await request.json()) as {
-      applicationId?: string;
-    };
+    requestBody = (await request.json()) as { applicationId?: string };
+    ({ applicationId } = requestBody);
 
     if (!applicationId) {
       return NextResponse.json(
@@ -142,8 +143,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unknown server error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("admin.approve.error", error, {
+      applicationId,
+      requestBody,
+    });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
