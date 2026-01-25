@@ -115,7 +115,7 @@ export async function POST(request: Request) {
       .update(passwordSetupToken)
       .digest("hex");
     const passwordSetupExpiresAt = admin.firestore.Timestamp.fromDate(
-      new Date(Date.now() + 15 * 60 * 1000)
+      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     );
 
     await applicationRef.update({
