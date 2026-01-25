@@ -79,7 +79,7 @@ export async function POST(request: Request) {
       status?: string;
     };
 
-    const email = applicationData.email;
+    const email = applicationData.email?.trim().toLowerCase();
     const name = applicationData.fullName;
     const status = applicationData.status;
 
