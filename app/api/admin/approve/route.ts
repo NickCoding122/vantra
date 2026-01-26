@@ -122,6 +122,7 @@ export async function POST(request: Request) {
       status: "approved",
       approvedAt: admin.firestore.FieldValue.serverTimestamp(),
       passwordSetupTokenHash,
+      passwordSetupTokenType: "password_setup",
       passwordSetupExpiresAt,
     });
 
